@@ -28,6 +28,7 @@ public class JoueurActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, JeuActivity.class);
         intent.putExtra("JOUEURUN_KEY", joueurUn);
+        intent.putExtra("JOUEURDEUX_KEY", joueurDeux);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK + Intent.FLAG_ACTIVITY_NEW_TASK);
         this.startActivity(intent);
     }

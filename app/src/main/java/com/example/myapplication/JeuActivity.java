@@ -11,20 +11,29 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class JeuActivity extends AppCompatActivity {
+    public static String joueurUnKey = "JOUEURUN_KEY";
+    public static String joueurDeuxKey = "JOUEURDEUX_KEY";
+    Joueur joueurUn;
+    Joueur joueurDeux;
     int tourJoueur = 0;
-    String dernierJoueur = "Joueur 2";
+    String dernierJoueur;
     ArrayList<Button> lesBoutons = new ArrayList<>();
     ArrayList<Button> lesBoutonsCliques = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.grille);
+
+        recupererJoueur();
     }
 
     public void recupererJoueur() {
         Intent intent = getIntent();
-        Joueur joueurUn = (Joueur) intent.getSerializableExtra("JOUEURUN_KEY");
-        System.out.println(joueurUn);
+        joueurUn = (Joueur) intent.getSerializableExtra(joueurUnKey);
+        joueurDeux = (Joueur) intent.getSerializableExtra(joueurDeuxKey);
+
+        TextView tvJoueur = findViewById(R.id.tvJoueur);
+        tvJoueur.setText("Au tour du " + joueurUn.nom);
     }
 
     // ----------------- TOUR -----------------
@@ -61,14 +70,15 @@ public class JeuActivity extends AppCompatActivity {
     public void cliquerBouton(Button button) {
         // Affichage du joueur qui doit jouer
         TextView tvJoueur = findViewById(R.id.tvJoueur);
-        tvJoueur.setText("Au tour du " + dernierJoueur);
+        if (tourJoueur == 0) tvJoueur.setText("Au tour de " + joueurDeux.nom);
+        else tvJoueur.setText("Au tour de " + dernierJoueur);
         // Le bouton cliqué est remplacé par le symbole du joueur
         if (tourJoueur % 2 == 0) {
             button.setText("X");
-            dernierJoueur = "Joueur 1";
+            dernierJoueur = joueurUn.nom;
         } else {
             button.setText("O");
-            dernierJoueur = "Joueur 2";
+            dernierJoueur = joueurDeux.nom;
         }
         // Désactive et ajoute le bouton cliqué aux boutons cliqués
         lesBoutonsCliques.add(button);
